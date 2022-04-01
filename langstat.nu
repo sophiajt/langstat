@@ -17,21 +17,12 @@ def main [
 }
 
 def build-range [num_days: int] {
-    let date_now = (date now)
-    let date_n_days_ago = ($date_now - (1day * $num_days))
+    let date_range = (seq date --days $num_days -r)
 
-    let start = ($date_n_days_ago | date to-table)
-    let end = ($date_now | date to-table)
+    let start = ($date_range | get $num_days)
+    let end = ($date_range | first)
 
-    let start_year = $start.year.0
-    let start_month = ($start.month.0 | into string | str lpad -c '0' -l 2)
-    let start_day = ($start.day.0 | into string | str lpad -c '0' -l 2)
-
-    let end_year = $end.year.0
-    let end_month = ($end.month.0 | into string | str lpad -c '0' -l 2)
-    let end_day = ($end.day.0 | into string | str lpad -c '0' -l 2)
-
-    $"($start_year)-($start_month)-($start_day)..($end_year)-($end_month)-($end_day)"
+    $"($start)..($end)"
 }
 
 def gather-data [num_days: int] {
